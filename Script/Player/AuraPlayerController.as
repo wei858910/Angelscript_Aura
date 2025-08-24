@@ -11,12 +11,30 @@ class AAuraPlayerController : APlayerController
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
-		EnhancedInputCompoent = UEnhancedInputComponent::Create(this);
-		UEnhancedInputLocalPlayerSubsystem EnhancedInputSubsystem = UEnhancedInputLocalPlayerSubsystem::Get(this);
-		EnhancedInputSubsystem.AddMappingContext(IMC_AuraContext, 0, FModifyContextOptions());
+		InitEnhancedInput();
+        BindActions();
+	}
 
-		EnhancedInputCompoent.BindAction(MoveAction, ETriggerEvent::Triggered, FEnhancedInputActionHandlerDynamicSignature(this, n"Move"));
-		PushInputComponent(EnhancedInputCompoent);
+	private void InitEnhancedInput()
+	{
+		EnhancedInputCompoent = UEnhancedInputComponent::Create(this);
+		if (EnhancedInputCompoent != nullptr)
+		{
+			PushInputComponent(EnhancedInputCompoent);
+		}
+		UEnhancedInputLocalPlayerSubsystem EnhancedInputSubsystem = UEnhancedInputLocalPlayerSubsystem::Get(this);
+		if (EnhancedInputSubsystem != nullptr && IMC_AuraContext != nullptr)
+		{
+			EnhancedInputSubsystem.AddMappingContext(IMC_AuraContext, 0, FModifyContextOptions());
+		}
+	}
+
+	private void BindActions()
+	{
+		if (EnhancedInputCompoent != nullptr && MoveAction != nullptr)
+		{
+			EnhancedInputCompoent.BindAction(MoveAction, ETriggerEvent::Triggered, FEnhancedInputActionHandlerDynamicSignature(this, n"Move"));
+		}
 	}
 
 	UFUNCTION()
