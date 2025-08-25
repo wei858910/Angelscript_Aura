@@ -8,11 +8,22 @@ class AAuraPlayerController : APlayerController
 
 	UEnhancedInputComponent EnhancedInputCompoent;
 
+	AAuraEnemy ThisEnemy = nullptr;
+	AAuraEnemy LastEnemy = nullptr;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
 		InitEnhancedInput();
-        BindActions();
+		BindActions();
+
+		bShowMouseCursor = true;
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void Tick(float DeltaSeconds)
+	{
+		CursorTrace();
 	}
 
 	private void InitEnhancedInput()
@@ -51,6 +62,49 @@ class AAuraPlayerController : APlayerController
 		{
 			ControlledAura.AddMovementInput(ControllerForwardVector, Value.Y);
 			ControlledAura.AddMovementInput(ControlerRightVector, Value.X);
+		}
+	}
+
+	void CursorTrace()
+	{
+		FHitResult HitResult;
+		GetHitResultUnderCursorByChannel(ETraceTypeQuery::Visibility, false, HitResult);
+
+		// Print(f"{HitResult.bBlockingHit}");
+
+		if (HitResult.bBlockingHit)
+		{
+			Print(f"{HitResult.GetActor().GetName()}");
+			ThisEnemy = Cast<AAuraEnemy>(HitResult.GetActor());
+
+			/*
+			   Case	Last	This
+			   #1		0		0
+			   #2		1		0
+			   #3		0		1
+			   #4		1		1
+		   */
+
+			if (LastEnemy != nullptr && ThisEnemy == nullptr)
+			{
+				LastEnemy.UnHighLight();
+			}
+
+			if (LastEnemy == nullptr && ThisEnemy != nullptr)
+			{
+				ThisEnemy.HighLightEnemy();
+			}
+
+			if (LastEnemy != nullptr && ThisEnemy != nullptr)
+			{
+				if (LastEnemy != ThisEnemy)
+				{
+					LastEnemy.UnHighLight();
+					ThisEnemy.HighLightEnemy();
+				}
+			}
+
+			LastEnemy = ThisEnemy;
 		}
 	}
 };
