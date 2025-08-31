@@ -1,4 +1,4 @@
-class AAuraCharacterBase : ACharacter
+class AAuraCharacterBase : AAuraCharacterCppBase
 {
 	// UPROPERTY(DefaultComponent, Attach = 父组件名, AttachSocket = 插槽名)
 	UPROPERTY(DefaultComponent, Attach = CharacterMesh0, AttachSocket = WeaponHandSocket)

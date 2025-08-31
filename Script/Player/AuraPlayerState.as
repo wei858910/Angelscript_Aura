@@ -4,7 +4,6 @@ class AAuraPlayerState : APlayerState
 
 	UPROPERTY(DefaultComponent)
 	UAngelscriptAbilitySystemComponent AbilitySystem;
-
 	default AbilitySystem.SetIsReplicated(true);
     default AbilitySystem.SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
@@ -15,7 +14,7 @@ class AAuraPlayerState : APlayerState
 	{
 	}
 
-	UAbilitySystemComponent GetAbilitySystemComponent()
+	UAngelscriptAbilitySystemComponent GetAbilitySystemComponent()
 	{
 		return AbilitySystem;
 	}

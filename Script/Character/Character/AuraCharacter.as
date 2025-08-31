@@ -20,4 +20,34 @@ class AAuraCharacter : AAuraCharacterBase
 	default bUseControllerRotationPitch = false;
 	default bUseControllerRotationRoll = false;
 	default bUseControllerRotationYaw = false;
+
+	TObjectPtr<UAngelscriptAbilitySystemComponent> AbilitySystem;
+	TObjectPtr<UAngelscriptAttributeSet> AttributeSet;
+
+	// 服务端调用
+	UFUNCTION(BlueprintOverride)
+	void Possessed(AController NewController)
+	{
+		InitAbilityActorInfo();
+	}
+
+	// 客户端调用
+	UFUNCTION(BlueprintOverride)
+	void OnRep_PlayerState()
+	{
+		InitAbilityActorInfo();
+	}
+
+	void InitAbilityActorInfo()
+	{
+		AAuraPlayerState AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
+		if(AuraPlayerState != nullptr)
+		{
+			AbilitySystem = AuraPlayerState.GetAbilitySystemComponent();
+			AbilitySystem.Get().InitAbilityActorInfo(AuraPlayerState, this);
+			AttributeSet = AuraPlayerState.GetAttirbuteSet();
+		}
+	}
+
+	
 };
