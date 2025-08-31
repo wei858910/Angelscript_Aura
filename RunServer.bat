@@ -1,0 +1,1 @@
+UnrealEditor.exe E:\UECodes\LearnAngelscript\Angelscript_Aura\Angelscript_Aura.uproject MainLevel -server -game -waitforattach -log -port=17777

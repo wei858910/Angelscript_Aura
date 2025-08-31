@@ -12,6 +12,7 @@ class AAuraPlayerState : APlayerState
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
+		Print("PlayerState Run");
 	}
 
 	UAngelscriptAbilitySystemComponent GetAbilitySystemComponent()

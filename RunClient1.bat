@@ -1,0 +1,1 @@
+UnrealEditor.exe E:\UECodes\LearnAngelscript\Angelscript_Aura\Angelscript_Aura.uproject 127.0.0.1:17777 -game -windowed -WinX=640 -WinY=208 -asdebugport=27098
