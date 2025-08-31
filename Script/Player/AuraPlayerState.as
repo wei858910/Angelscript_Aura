@@ -1,5 +1,7 @@
 class AAuraPlayerState : APlayerState
 {
+    default SetNetUpdateFrequency(100.f);
+
 	UPROPERTY(DefaultComponent)
 	UAngelscriptAbilitySystemComponent AbilitySystem;
 
