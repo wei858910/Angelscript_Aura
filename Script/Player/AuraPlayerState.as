@@ -4,6 +4,7 @@ class AAuraPlayerState : APlayerState
 	UAngelscriptAbilitySystemComponent AbilitySystem;
 
 	default AbilitySystem.SetIsReplicated(true);
+    default AbilitySystem.SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	TObjectPtr<UAngelscriptAttributeSet> AttributeSet;
 
