@@ -1,5 +1,13 @@
 class AAuraEnemy : AAuraCharacterBase
 {
+
+	UPROPERTY(DefaultComponent)
+	UAngelscriptAbilitySystemComponent AbilitySystem;
+	default AbilitySystem.SetIsReplicated(true);
+	default AbilitySystem.SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	TObjectPtr<UAngelscriptAttributeSet> AttributeSet;
+
 	default Mesh.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 
 	void HighLightEnemy()
@@ -30,5 +38,15 @@ class AAuraEnemy : AAuraCharacterBase
 		{
 			Weapon.SetRenderCustomDepth(false);
 		}
+	}
+
+	UAbilitySystemComponent GetAbilitySystemComponent()
+	{
+		return AbilitySystem;
+	}
+
+	UAngelscriptAttributeSet GetAttirbuteSet()
+	{
+		return AttributeSet;
 	}
 };
