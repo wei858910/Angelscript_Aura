@@ -1,6 +1,5 @@
 class AAuraEnemy : AAuraCharacterBase
 {
-
 	UPROPERTY(DefaultComponent)
 	UAngelscriptAbilitySystemComponent AbilitySystem;
 	default AbilitySystem.SetIsReplicated(true);
@@ -9,6 +8,13 @@ class AAuraEnemy : AAuraCharacterBase
 	TObjectPtr<UAngelscriptAttributeSet> AttributeSet;
 
 	default Mesh.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+
+	UFUNCTION(BlueprintOverride)
+	void BeginPlay()
+	{
+		Super::BeginPlay();
+		AbilitySystem.InitAbilityActorInfo(this, this);
+	}
 
 	void HighLightEnemy()
 	{
@@ -40,7 +46,7 @@ class AAuraEnemy : AAuraCharacterBase
 		}
 	}
 
-	UAbilitySystemComponent GetAbilitySystemComponent()
+	UAngelscriptAbilitySystemComponent GetAbilitySystemComponent()
 	{
 		return AbilitySystem;
 	}
