@@ -52,7 +52,7 @@ class AAuraPlayerController : APlayerController
 	private void Move(FInputActionValue ActionValue, float32 ElapsedTime, float32 TriggeredTime, const UInputAction SourceAction)
 	{
 		FVector2D Value = ActionValue.Axis2D;
-		Print(f"{Value.ToString()}");
+		// Print(f"{Value.ToString()}");
 
 		FVector ControllerForwardVector = GetControlRotation().ForwardVector;
 		FVector ControlerRightVector = GetControlRotation().RightVector;
@@ -74,7 +74,7 @@ class AAuraPlayerController : APlayerController
 
 		if (HitResult.bBlockingHit)
 		{
-			Print(f"{HitResult.GetActor().GetName()}");
+			// Print(f"{HitResult.GetActor().GetName()}");
 			ThisEnemy = Cast<AAuraEnemy>(HitResult.GetActor());
 
 			/*

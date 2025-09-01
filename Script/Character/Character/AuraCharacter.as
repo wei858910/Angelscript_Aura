@@ -45,7 +45,8 @@ class AAuraCharacter : AAuraCharacterBase
 		{
 			AbilitySystem = AuraPlayerState.GetAbilitySystemComponent();
 			AbilitySystem.Get().InitAbilityActorInfo(AuraPlayerState, this);
-			AttributeSet = AuraPlayerState.GetAttirbuteSet();
+			AttributeSet = AbilitySystem.Get().RegisterAttributeSet(UAuraAttributeSet);
+			AuraPlayerState.AttributeSet = AttributeSet;
 		}
 	}
 
