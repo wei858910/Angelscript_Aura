@@ -18,6 +18,7 @@ class AAuraPlayerController : APlayerController
 		BindActions();
 
 		bShowMouseCursor = true;
+		Widget::SetInputMode_GameAndUIEx(this, bHideCursorDuringCapture = false);
 	}
 
 	UFUNCTION(BlueprintOverride)
