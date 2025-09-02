@@ -22,7 +22,23 @@ class AAuraCharacter : AAuraCharacterBase
 	default bUseControllerRotationYaw = false;
 
 	TObjectPtr<UAngelscriptAbilitySystemComponent> AbilitySystem;
-	TObjectPtr<UAngelscriptAttributeSet> AttributeSet;
+	TObjectPtr<UAuraAttributeSet> AttributeSet;
+
+	UFUNCTION(BlueprintOverride)
+	void Tick(float DeltaSeconds)
+	{
+		if (AttributeSet == nullptr)
+			return;
+
+		if (HasAuthority())
+		{
+			Print(f"Server- Character's Health = {AttributeSet.Get().Health.CurrentValue}", DeltaSeconds);
+		}
+		else
+		{
+			Print(f"Client- Character's Health = {AttributeSet.Get().Health.CurrentValue}", DeltaSeconds, FLinearColor::Red);
+		}
+	}
 
 	// 服务端调用
 	UFUNCTION(BlueprintOverride)
@@ -41,14 +57,12 @@ class AAuraCharacter : AAuraCharacterBase
 	void InitAbilityActorInfo()
 	{
 		AAuraPlayerState AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
-		if(AuraPlayerState != nullptr)
+		if (AuraPlayerState != nullptr)
 		{
 			AbilitySystem = AuraPlayerState.GetAbilitySystemComponent();
 			AbilitySystem.Get().InitAbilityActorInfo(AuraPlayerState, this);
-			AttributeSet = AbilitySystem.Get().RegisterAttributeSet(UAuraAttributeSet);
+			AttributeSet = Cast<UAuraAttributeSet>(AbilitySystem.Get().RegisterAttributeSet(UAuraAttributeSet));
 			AuraPlayerState.AttributeSet = AttributeSet;
 		}
 	}
-
-	
 };

@@ -1,15 +1,15 @@
 class UAuraAttributeSet : UAngelscriptAttributeSet
 {
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	FAngelscriptGameplayAttributeData Health;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	FAngelscriptGameplayAttributeData MaxHealth;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	FAngelscriptGameplayAttributeData Mana;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	FAngelscriptGameplayAttributeData MaxMana;
 
 	UAuraAttributeSet()
