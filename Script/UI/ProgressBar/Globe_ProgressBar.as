@@ -15,6 +15,9 @@ class UGlobe_ProgressBar : UUI_AuraWidget
 	UPROPERTY(BindWidget)
 	UImage Image_Glass;
 
+	UPROPERTY(BindWidget)
+	UTextBlock Text_Value;
+
 	UPROPERTY(Category = GlobeProgressBar)
 	int BoxWidth = 250;
 	UPROPERTY(Category = GlobeProgressBar)
@@ -103,6 +106,8 @@ class UGlobe_ProgressBar : UUI_AuraWidget
 		MaxValue = NewMaxValue;
 		Percent = AuraMath::SafeDivide(Value, MaxValue);
 
+		Text_Value.SetText(FText::FromString(f"{Value:.0}/{MaxValue:.0}"));
+
 		float NewPercent = AuraMath::SafeDivide(NewValue, NewMaxValue);
 
 		float MainPercent = ProgressBar_Globe.Percent;
@@ -156,5 +161,20 @@ class UGlobe_ProgressBar : UUI_AuraWidget
 	void Tick(FGeometry MyGeometry, float InDeltaTime)
 	{
 		ChasingProgress(InDeltaTime);
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void OnMouseEnter(FGeometry MyGeometry, FPointerEvent MouseEvent)
+	{
+		Text_Value.SetVisibility(ESlateVisibility::Visible);
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void OnMouseLeave(FPointerEvent MouseEvent)
+	{
+		if (!MouseEvent.GetEffectingButton().IsValid())
+		{
+			Text_Value.SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 };
