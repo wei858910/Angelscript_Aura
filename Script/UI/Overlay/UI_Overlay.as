@@ -16,11 +16,11 @@ class UUI_Overlay : UUI_AuraWidget
 	{
 		// 为指定属性数据绑定回调
 		WidgetController.Get().AbilitySystem.Get().OnAttributeChanged.AddUFunction(this, n"OnAuraAttributeSetDataChanged");
-		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, n"Health");
-		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, n"MaxHealth");
+		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, AuraAttributeSetName::Health);
+		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, AuraAttributeSetName::MaxHealth);
 
-		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, n"Mana");
-		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, n"MaxMana");
+		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, AuraAttributeSetName::Mana);
+		WidgetController.Get().AbilitySystem.Get().RegisterCallbackForAttribute(UAuraAttributeSet, AuraAttributeSetName::MaxMana);
 
 		UAuraAttributeSet AttributeSet = WidgetController.Get().AuraAttributeSet;
 
@@ -41,20 +41,22 @@ class UUI_Overlay : UUI_AuraWidget
 	UFUNCTION()
 	private void OnAuraAttributeSetDataChanged(const FAngelscriptModifiedAttribute&in AttributeChangeData)
 	{
-		if (AttributeChangeData.Name == n"Health")
+		if (AttributeChangeData.Name == AuraAttributeSetName::Health)
 		{
 			Health = AttributeChangeData.NewValue;
 		}
 
-		if (AttributeChangeData.Name == n"MaxHealth")
+		if (AttributeChangeData.Name == AuraAttributeSetName::MaxHealth)
 		{
 			MaxHealth = AttributeChangeData.NewValue;
 		}
-		if (AttributeChangeData.Name == n"Mana")
+
+		if (AttributeChangeData.Name == AuraAttributeSetName::Mana)
 		{
 			Mana = AttributeChangeData.NewValue;
 		}
-		if (AttributeChangeData.Name == n"MaxMana")
+		
+		if (AttributeChangeData.Name == AuraAttributeSetName::MaxMana)
 		{
 			MaxMana = AttributeChangeData.NewValue;
 		}
@@ -64,7 +66,7 @@ class UUI_Overlay : UUI_AuraWidget
 
 	void UpdateUI()
 	{
-		WBP_Health.SetProgressBarPercent(Health / MaxHealth);
-		WBP_Mana.SetProgressBarPercent(Mana / MaxMana);
+		WBP_Health.SetProgressBarPercent(AuraMath::SafeDivide(Health, MaxHealth));
+		WBP_Mana.SetProgressBarPercent(AuraMath::SafeDivide(Mana, MaxMana));
 	}
 };

@@ -1,3 +1,12 @@
+
+namespace AuraAttributeSetName
+{
+	const FName Health = n"Health";
+	const FName MaxHealth = n"MaxHealth";
+	const FName Mana = n"Mana";
+	const FName MaxMana = n"MaxMana";
+} // namespace AuraAttributeSetName
+
 class UAuraAttributeSet : UAngelscriptAttributeSet
 {
 	UPROPERTY(ReplicatedUsing = OnRep_AttributeDataChanged)
