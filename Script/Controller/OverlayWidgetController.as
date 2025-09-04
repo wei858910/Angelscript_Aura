@@ -1,0 +1,4 @@
+class UOverlayWidgetController : UWidgetController
+{
+    
+};

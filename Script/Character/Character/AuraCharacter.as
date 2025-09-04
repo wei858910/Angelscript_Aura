@@ -63,6 +63,20 @@ class AAuraCharacter : AAuraCharacterBase
 			AbilitySystem.Get().InitAbilityActorInfo(AuraPlayerState, this);
 			AttributeSet = Cast<UAuraAttributeSet>(AbilitySystem.Get().RegisterAttributeSet(UAuraAttributeSet));
 			AuraPlayerState.AttributeSet = AttributeSet;
+
+			if (!HasAuthority())
+			{
+				AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(Controller);
+				if (AuraPlayerController != nullptr)
+				{
+					AAuraHUD AuraHUD = Cast<AAuraHUD>(AuraPlayerController.GetHUD());
+					if (IsValid(AuraHUD))
+					{
+						AuraHUD.GetWidgetController(AuraPlayerController, AuraPlayerState, AbilitySystem, AttributeSet);
+						AuraHUD.ShowUIOverlay();
+					}
+				}
+			}
 		}
 	}
 };

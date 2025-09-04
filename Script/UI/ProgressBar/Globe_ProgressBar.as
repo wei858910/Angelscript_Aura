@@ -1,4 +1,4 @@
-class UGlobe_ProgressBar : UUserWidget
+class UGlobe_ProgressBar : UUI_AuraWidget
 {
 	UPROPERTY(BindWidget)
 	USizeBox SizeBox_Root;
@@ -85,5 +85,11 @@ class UGlobe_ProgressBar : UUserWidget
 		UpdateGlobePadding();
 		UpdateGlassBrush();
 		UpdateGlassPadding();
+	}
+
+	void SetProgressBarPercent(float32 Percent)
+	{
+		ProgressBar_Globe.SetPercent(Percent);
+		ProgressBar_Ghost.SetPercent(Percent);
 	}
 };

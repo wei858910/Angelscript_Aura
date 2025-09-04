@@ -31,6 +31,11 @@ class ATestActor : AActor
 					CurrentHealth += 10;
 					AuraCharacter.AttributeSet.Get().Health.SetCurrentValue(CurrentHealth);
 					AuraCharacter.AttributeSet.Get().Health.SetBaseValue(CurrentHealth);
+
+					float32 CurrentMana = AuraCharacter.AttributeSet.Get().Mana.CurrentValue;
+					CurrentMana += 5;
+					AuraCharacter.AttributeSet.Get().Mana.SetCurrentValue(CurrentMana);
+					AuraCharacter.AttributeSet.Get().Mana.SetBaseValue(CurrentMana);
 				}
 			}
 		}
