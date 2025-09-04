@@ -35,6 +35,11 @@ class UGlobe_ProgressBar : UUI_AuraWidget
 	UPROPERTY(Category = GlobeProgressBar)
 	FSlateBrush GlassBrush;
 
+	private float32 Value;
+	private float32 MaxValue;
+	private float32 Percent;
+	private const float32 ChaseSpeed = 0.1f;
+
 	void UpdateBoxSize()
 	{
 		SizeBox_Root.SetWidthOverride(BoxWidth);
@@ -87,9 +92,69 @@ class UGlobe_ProgressBar : UUI_AuraWidget
 		UpdateGlassPadding();
 	}
 
-	void SetProgressBarPercent(float32 Percent)
+	void SetProgressBarPercent(float32 NewValue, float32 NewMaxValue)
 	{
-		ProgressBar_Globe.SetPercent(Percent);
-		ProgressBar_Ghost.SetPercent(Percent);
+		if (NewValue == Value && NewMaxValue == MaxValue)
+		{
+			return;
+		}
+
+		Value = NewValue;
+		MaxValue = NewMaxValue;
+		Percent = AuraMath::SafeDivide(Value, MaxValue);
+
+		float NewPercent = AuraMath::SafeDivide(NewValue, NewMaxValue);
+
+		float MainPercent = ProgressBar_Globe.Percent;
+		float GhostPercent = ProgressBar_Ghost.Percent;
+
+		if (NewPercent < MainPercent)
+		{
+			if (NewPercent < GhostPercent)
+			{
+				ProgressBar_Globe.SetPercent(NewPercent);
+			}
+		}
+		else
+		{
+			if (NewPercent > GhostPercent)
+			{
+				ProgressBar_Ghost.SetPercent(NewPercent);
+			}
+			else
+			{
+				ProgressBar_Globe.SetPercent(NewPercent);
+			}
+		}
+	}
+
+	void ChasingProgress(float DeltaTime)
+	{
+		float32 MainPercent = ProgressBar_Globe.Percent;
+		float32 GhostPercent = ProgressBar_Ghost.Percent;
+
+		if (MainPercent == GhostPercent && MainPercent == Percent)
+		{
+			return;
+		}
+
+		UProgressBar ChasingProgressBar = (MainPercent != Percent) ? ProgressBar_Globe : ProgressBar_Ghost;
+
+		float32 DeltePercent = ChaseSpeed * float32(DeltaTime);
+
+		if (ChasingProgressBar.Percent < Percent)
+		{
+			ChasingProgressBar.SetPercent(Math::Min(ChasingProgressBar.Percent + DeltePercent, Percent));
+		}
+		else
+		{
+			ChasingProgressBar.SetPercent(Math::Max(ChasingProgressBar.Percent - DeltePercent, Percent));
+		}
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void Tick(FGeometry MyGeometry, float InDeltaTime)
+	{
+		ChasingProgress(InDeltaTime);
 	}
 };

@@ -55,7 +55,7 @@ class UUI_Overlay : UUI_AuraWidget
 		{
 			Mana = AttributeChangeData.NewValue;
 		}
-		
+
 		if (AttributeChangeData.Name == AuraAttributeSetName::MaxMana)
 		{
 			MaxMana = AttributeChangeData.NewValue;
@@ -66,7 +66,7 @@ class UUI_Overlay : UUI_AuraWidget
 
 	void UpdateUI()
 	{
-		WBP_Health.SetProgressBarPercent(AuraMath::SafeDivide(Health, MaxHealth));
-		WBP_Mana.SetProgressBarPercent(AuraMath::SafeDivide(Mana, MaxMana));
+		WBP_Health.SetProgressBarPercent(Health, MaxHealth);
+		WBP_Mana.SetProgressBarPercent(Mana, MaxMana);
 	}
 };
