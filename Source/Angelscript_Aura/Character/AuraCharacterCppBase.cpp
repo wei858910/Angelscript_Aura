@@ -16,5 +16,7 @@ void AAuraCharacterCppBase::OnRep_PlayerState()
 	BP_OnRep_PlayerState();
 }
 
-
-
+UAbilitySystemComponent* AAuraCharacterCppBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}

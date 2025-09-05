@@ -60,6 +60,7 @@ class AAuraCharacter : AAuraCharacterBase
 		if (AuraPlayerState != nullptr)
 		{
 			AbilitySystem = AuraPlayerState.GetAbilitySystemComponent();
+			AbilitySystemComponent = Cast<UAbilitySystemComponent>(AbilitySystem.Get());
 			AbilitySystem.Get().InitAbilityActorInfo(AuraPlayerState, this);
 			AttributeSet = Cast<UAuraAttributeSet>(AbilitySystem.Get().RegisterAttributeSet(UAuraAttributeSet));
 			AuraPlayerState.AttributeSet = AttributeSet;

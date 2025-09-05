@@ -6,6 +6,9 @@ class ATestActor : AActor
 	UPROPERTY(DefaultComponent, Attach = RootMesh)
 	USphereComponent Sphere;
 
+	UPROPERTY()
+	TSubclassOf<UGameplayEffect> GameEffectClass;
+
 	default Sphere.SetSphereRadius(150.f);
 
 	UFUNCTION(BlueprintOverride)
@@ -20,24 +23,9 @@ class ATestActor : AActor
 	UFUNCTION()
 	private void OnTestActorBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
 	{
-		if (GetLocalRole() == ENetRole::ROLE_Authority)
+		if (HasAuthority())
 		{
-			AAuraCharacter AuraCharacter = Cast<AAuraCharacter>(OtherActor);
-			if (AuraCharacter != nullptr)
-			{
-				if (AuraCharacter.AttributeSet != nullptr)
-				{
-					float32 CurrentHealth = AuraCharacter.AttributeSet.Get().Health.CurrentValue;
-					CurrentHealth += 10;
-					AuraCharacter.AttributeSet.Get().Health.SetCurrentValue(CurrentHealth);
-					AuraCharacter.AttributeSet.Get().Health.SetBaseValue(CurrentHealth);
-
-					float32 CurrentMana = AuraCharacter.AttributeSet.Get().Mana.CurrentValue;
-					CurrentMana += 5;
-					AuraCharacter.AttributeSet.Get().Mana.SetCurrentValue(CurrentMana);
-					AuraCharacter.AttributeSet.Get().Mana.SetBaseValue(CurrentMana);
-				}
-			}
+			GASUtils::ApplyGameplayEffect(this, OtherActor, GameEffectClass);
 		}
 	}
 

@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "AuraCharacterCppBase.generated.h"
 
 UCLASS()
-class ANGELSCRIPT_AURA_API AAuraCharacterCppBase : public ACharacter
+class ANGELSCRIPT_AURA_API AAuraCharacterCppBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -19,4 +20,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnRep_PlayerState();
+
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 };
