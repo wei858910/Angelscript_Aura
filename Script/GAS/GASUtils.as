@@ -2,10 +2,7 @@ namespace GASUtils
 {
 	void ApplyGameplayEffectToTarget(AActor SourceActor, AActor TargetActor, TSubclassOf<UGameplayEffect> GameplayEffecClass, float32 InLevel = 1)
 	{
-		if (TargetActor == nullptr || SourceActor == nullptr)
-			return;
-
-		if (GameplayEffecClass == nullptr)
+		if (TargetActor == nullptr || SourceActor == nullptr || GameplayEffecClass == nullptr)
 			return;
 
 		UAbilitySystemComponent AbilitySystemComponent = AbilitySystem::GetAbilitySystemComponent(TargetActor);
