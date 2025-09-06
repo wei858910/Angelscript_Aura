@@ -1,6 +1,6 @@
 namespace GASUtils
 {
-	void ApplyGameplayEffect(AActor SourceActor, AActor TargetActor, TSubclassOf<UGameplayEffect> GameplayEffecClass, float32 InLevel = 1)
+	void ApplyGameplayEffectToTarget(AActor SourceActor, AActor TargetActor, TSubclassOf<UGameplayEffect> GameplayEffecClass, float32 InLevel = 1)
 	{
 		if (TargetActor == nullptr || SourceActor == nullptr)
 			return;
