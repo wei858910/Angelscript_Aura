@@ -6,9 +6,11 @@ class AAuraEffectActor : AActor
 	UPROPERTY()
 	TSubclassOf<UGameplayEffect> GameEffectClass;
 
+	float YawRotation = Math::RandRange(10.f, 180.f);
+
 	UPROPERTY(DefaultComponent)
 	URotatingMovementComponent RotatingComponent;
-	default RotatingComponent.RotationRate = FRotator(0.f, 60.f, 0.f);
+	default RotatingComponent.RotationRate = FRotator(0.f, YawRotation, 0.f);
 
 	UPROPERTY()
 	UMetaSoundSource SpawnSound;
