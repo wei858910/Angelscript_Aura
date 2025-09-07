@@ -21,6 +21,8 @@ class AAuraEffectActor : AActor
 	UPROPERTY()
 	UMetaSoundSource ConsumeSound;
 
+	FActiveGameplayEffectHandle EffectHandle;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
@@ -28,5 +30,17 @@ class AAuraEffectActor : AActor
 		{
 			Gameplay::PlaySound2D(SpawnSound);
 		}
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void ActorBeginOverlap(AActor OtherActor)
+	{
+		EffectHandle = GASUtils::ApplyGameplayEffectToTarget(this, OtherActor, GameEffectClass);
+	}
+
+	UFUNCTION(BlueprintOverride)
+	void ActorEndOverlap(AActor OtherActor)
+	{
+		GASUtils::RemoveGameplayEffectToTarget(this, OtherActor, EffectHandle);
 	}
 };
