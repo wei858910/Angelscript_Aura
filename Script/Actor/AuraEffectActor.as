@@ -1,3 +1,10 @@
+
+enum EGameEffectType
+{
+	EGET_Normal,  // 一般游戏效果类型
+	EGET_Infinite // 永久性游戏效果类型
+}
+
 class AAuraEffectActor : AActor
 {
 	UPROPERTY(DefaultComponent, RootComponent)
@@ -23,10 +30,13 @@ class AAuraEffectActor : AActor
 
 	FActiveGameplayEffectHandle EffectHandle;
 
+	UPROPERTY()
+	EGameEffectType GameEffectType = EGameEffectType::EGET_Normal;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
-		if (IsValid(SpawnSound))
+		if (IsValid(SpawnSound) && !HasAuthority() && GameEffectType != EGameEffectType::EGET_Infinite)
 		{
 			Gameplay::PlaySound2D(SpawnSound);
 		}
@@ -35,12 +45,38 @@ class AAuraEffectActor : AActor
 	UFUNCTION(BlueprintOverride)
 	void ActorBeginOverlap(AActor OtherActor)
 	{
-		EffectHandle = GASUtils::ApplyGameplayEffectToTarget(this, OtherActor, GameEffectClass);
+		if (HasAuthority())
+		{
+			EffectHandle = GASUtils::ApplyGameplayEffectToTarget(this, OtherActor, GameEffectClass);
+		}
+		else
+		{
+			if (IsValid(ConsumeSound) && GameEffectType != EGameEffectType::EGET_Infinite)
+			{
+				Gameplay::PlaySound2D(ConsumeSound);
+			}
+		}
+
+		if (GameEffectType == EGameEffectType::EGET_Normal)
+		{
+			DestroyActor();
+		}
 	}
 
 	UFUNCTION(BlueprintOverride)
 	void ActorEndOverlap(AActor OtherActor)
 	{
-		GASUtils::RemoveGameplayEffectToTarget(this, OtherActor, EffectHandle);
+		if (HasAuthority())
+		{
+			if (GameEffectType == EGameEffectType::EGET_Infinite)
+			{
+				GASUtils::RemoveGameplayEffectFromTarget(this, OtherActor, EffectHandle);
+			}
+		}
+
+		if (GameEffectType == EGameEffectType::EGET_Normal)
+		{
+			DestroyActor();
+		}
 	}
 };

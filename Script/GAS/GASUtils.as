@@ -18,7 +18,7 @@ namespace GASUtils
 		return AbilitySystemComponent.ApplyGameplayEffectSpecToSelf(EffectSpecHandle);
 	}
 
-	void RemoveGameplayEffectToTarget(AActor SourceActor, AActor TargetActor, FActiveGameplayEffectHandle EffectHandle, float32 InLevel = 1)
+	void RemoveGameplayEffectFromTarget(AActor SourceActor, AActor TargetActor, FActiveGameplayEffectHandle EffectHandle, float32 InLevel = 1)
 	{
 		if (TargetActor == nullptr || SourceActor == nullptr)
 			return;
