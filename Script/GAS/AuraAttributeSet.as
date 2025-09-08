@@ -35,4 +35,36 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 	{
 		OnRep_Attribute(OldData);
 	}
+
+	// 属性BaseValue预测
+	UFUNCTION(BlueprintOverride)
+	void PreAttributeBaseChange(FGameplayAttribute Attribute, float32& NewValue) const
+	{
+		Print(f"{Attribute.AttributeName}, NewValue = {NewValue}");
+	}
+
+	// 属性CurrentValue预测
+	UFUNCTION(BlueprintOverride)
+	void PreAttributeChange(FGameplayAttribute Attribute, float32& NewValue)
+	{
+		Print(f"{Attribute.AttributeName}, NewValue = {NewValue}");
+		ClampingAttributeValue(Attribute.AttributeName, NewValue);
+	}
+
+	// 游戏效果预测
+	UFUNCTION(BlueprintOverride)
+	bool PreGameplayEffectExecute(FGameplayEffectSpec EffectSpec, FGameplayModifierEvaluatedData& EvaluatedData, UAngelscriptAbilitySystemComponent AbilitySystemComponent)
+	{
+		Print(f"{EvaluatedData.Attribute.AttributeName}");
+		return true;
+	}
+
+	// 对属性的钳制
+	void ClampingAttributeValue(FString InAttributeName, float32& NewValue)
+	{
+		if (InAttributeName == AuraAttributeSetName::Health)
+		{
+			NewValue = Math::Min(NewValue, MaxHealth.CurrentValue);
+		}
+	}
 };
