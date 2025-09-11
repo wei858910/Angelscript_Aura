@@ -9,6 +9,15 @@ class AAuraHUD : AHUD
 	UPROPERTY(NotEditable)
 	TObjectPtr<UWidgetController> WidgetController;
 
+	UPROPERTY()
+	UDataTable PickupItemData;
+
+	UFUNCTION(BlueprintOverride)
+	void BeginPlay()
+	{
+		OnItemPickuped(EItemID::ManaPotion);
+	}
+
 	UWidgetController GetWidgetController(AAuraPlayerController InPlayerController, AAuraPlayerState InPlayerState, UAngelscriptAbilitySystemComponent InAbilitySystem, UAuraAttributeSet InAttributeSet)
 	{
 		if (WidgetController != nullptr)
@@ -36,6 +45,40 @@ class AAuraHUD : AHUD
 				{
 					UIOverlay.Get().SetWidgetController(WidgetController);
 					UIOverlay.Get().AddToViewport();
+				}
+			}
+		}
+	}
+
+	void OnItemPickuped(EItemID ItemID)
+	{
+		if (IsValid(PickupItemData))
+		{
+			TArray<FItemData> ItemDataArray;
+
+			PickupItemData.GetAllRows(ItemDataArray);
+
+			for (FItemData ItemData : ItemDataArray)
+			{
+				if (ItemData.ItemID == ItemID)
+				{
+					AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(GetOwningPlayerController());
+					UUI_PickupMessage PickupMessage = Cast<UUI_PickupMessage>(WidgetBlueprint::CreateWidget(ItemData.PickupMessageClass, AuraPlayerController));
+					if (IsValid(PickupMessage))
+					{
+						int X = 0;
+						int Y = 0;
+						AuraPlayerController.GetViewportSize(X, Y);
+
+						FVector2D Position(X, Y);
+						Position.X /=2;
+						Position.Y /=2;
+
+						PickupMessage.SetTipMessage(ItemData.Icon, ItemData.PotionName);
+						PickupMessage.SetPositionInViewport(Position);
+						PickupMessage.AddToViewport();
+						PickupMessage.PlayMessageAnim();
+					}
 				}
 			}
 		}
