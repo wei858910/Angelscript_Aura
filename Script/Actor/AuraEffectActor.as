@@ -33,6 +33,9 @@ class AAuraEffectActor : AActor
 	UPROPERTY()
 	EGameEffectType GameEffectType = EGameEffectType::EGET_Normal;
 
+	UPROPERTY()
+	EItemID ItemID;
+
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
@@ -55,6 +58,8 @@ class AAuraEffectActor : AActor
 			{
 				Gameplay::PlaySound2D(ConsumeSound);
 			}
+
+			UAuraGameInstanceSubsystem::Get().OnItemPickupedEvent.Broadcast(ItemID);
 		}
 
 		if (GameEffectType == EGameEffectType::EGET_Normal)

@@ -15,7 +15,7 @@ class AAuraHUD : AHUD
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
-		OnItemPickuped(EItemID::ManaPotion);
+		UAuraGameInstanceSubsystem::Get().OnItemPickupedEvent.AddUFunction(this, n"OnItemPickuped");
 	}
 
 	UWidgetController GetWidgetController(AAuraPlayerController InPlayerController, AAuraPlayerState InPlayerState, UAngelscriptAbilitySystemComponent InAbilitySystem, UAuraAttributeSet InAttributeSet)
@@ -50,6 +50,7 @@ class AAuraHUD : AHUD
 		}
 	}
 
+	UFUNCTION()
 	void OnItemPickuped(EItemID ItemID)
 	{
 		if (IsValid(PickupItemData))
@@ -71,8 +72,8 @@ class AAuraHUD : AHUD
 						AuraPlayerController.GetViewportSize(X, Y);
 
 						FVector2D Position(X, Y);
-						Position.X /=2;
-						Position.Y /=2;
+						Position.X /= 2;
+						Position.Y /= 2;
 
 						PickupMessage.SetTipMessage(ItemData.Icon, ItemData.PotionName);
 						PickupMessage.SetPositionInViewport(Position);
