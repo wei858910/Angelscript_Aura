@@ -67,7 +67,7 @@ class AAuraCharacter : AAuraCharacterBase
 
 			if (!HasAuthority())
 			{
-				AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(Controller);
+				AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(GetController());
 				if (AuraPlayerController != nullptr)
 				{
 					AAuraHUD AuraHUD = Cast<AAuraHUD>(AuraPlayerController.GetHUD());

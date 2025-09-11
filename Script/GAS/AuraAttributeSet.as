@@ -85,7 +85,7 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 	UFUNCTION(BlueprintOverride)
 	bool PreGameplayEffectExecute(FGameplayEffectSpec EffectSpec, FGameplayModifierEvaluatedData& EvaluatedData, UAngelscriptAbilitySystemComponent AbilitySystemComponent)
 	{
-		Print(f"{EvaluatedData.Attribute.AttributeName}");
+		Print(f"{EvaluatedData.GetAttribute().AttributeName}");
 		return true;
 	}
 
@@ -94,14 +94,14 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 	{
 		if (InAttributeName == Health.AttributeName)
 		{
-			Health.CurrentValue = Math::Clamp(Health.CurrentValue, 0., MaxHealth.CurrentValue);
-			Health.BaseValue = Math::Clamp(Health.BaseValue, 0., MaxHealth.CurrentValue);
+			Health.SetCurrentValue(Math::Clamp(Health.GetCurrentValue(), 0., MaxHealth.GetCurrentValue()));
+			Health.SetBaseValue(Math::Clamp(Health.GetBaseValue(), 0., MaxHealth.GetCurrentValue()));
 		}
 
 		if (InAttributeName == Mana.AttributeName)
 		{
-			Mana.CurrentValue = Math::Clamp(Mana.CurrentValue, 0., MaxMana.CurrentValue);
-			Mana.BaseValue = Math::Clamp(Mana.BaseValue, 0., MaxMana.CurrentValue);
+			Mana.SetCurrentValue(Math::Clamp(Mana.CurrentValue, 0., MaxMana.CurrentValue));
+			Mana.SetBaseValue(Math::Clamp(Mana.BaseValue, 0., MaxMana.CurrentValue));
 		}
 	}
 
@@ -122,10 +122,10 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 		Props.EffectContextHandle = EffectSpec.GetContext();
 		Props.SourceASC = Cast<UAngelscriptAbilitySystemComponent>(Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent());
 
-		if (IsValid(Props.SourceASC) && IsValid(Props.SourceASC.AbilityActorInfo.AvatarActor))
+		if (IsValid(Props.SourceASC) && IsValid(Props.SourceASC.GetAbilityActorInfo().GetAvatarActor()))
 		{
-			Props.SourceAvatarActor = Props.SourceASC.AbilityActorInfo.AvatarActor;
-			Props.SourceController = Props.SourceASC.AbilityActorInfo.PlayerController;
+			Props.SourceAvatarActor = Props.SourceASC.GetAbilityActorInfo().GetAvatarActor();
+			Props.SourceController = Props.SourceASC.GetAbilityActorInfo().GetPlayerController();
 			if (Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
 			{
 				APawn Pawn = Cast<APawn>(Props.SourceAvatarActor);
@@ -144,9 +144,9 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 		if (IsValid(InTargetASC))
 		{
 			Props.TargetASC = InTargetASC;
-			Props.TargetAvatarActor = InTargetASC.AbilityActorInfo.AvatarActor;
-			Props.TargetController = InTargetASC.AbilityActorInfo.PlayerController;
-			Props.TargetCharacter = Cast<ACharacter>(InTargetASC.AbilityActorInfo.AvatarActor);
+			Props.TargetAvatarActor = InTargetASC.GetAbilityActorInfo().GetAvatarActor();
+			Props.TargetController = InTargetASC.GetAbilityActorInfo().GetPlayerController();
+			Props.TargetCharacter = Cast<ACharacter>(InTargetASC.GetAbilityActorInfo().GetAvatarActor());
 		}
 	}
 
@@ -156,7 +156,7 @@ class UAuraAttributeSet : UAngelscriptAttributeSet
 	UFUNCTION(BlueprintOverride)
 	void PostGameplayEffectExecute(FGameplayEffectSpec EffectSpec, FGameplayModifierEvaluatedData& EvaluatedData, UAngelscriptAbilitySystemComponent AbilitySystemComponent)
 	{
-		ClampingAttributeValue(EvaluatedData.Attribute.AttributeName);
+		ClampingAttributeValue(EvaluatedData.GetAttribute().AttributeName);
 
 		FEffectProperties EffectProperties;
 		SetEffectProperties(EffectSpec, AbilitySystemComponent, EffectProperties);

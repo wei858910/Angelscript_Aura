@@ -28,7 +28,7 @@ class AAuraHUD : AHUD
 	{
 		if (IsValid(UIOverlayClass))
 		{
-			AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(OwningPlayerController);
+			AAuraPlayerController AuraPlayerController = Cast<AAuraPlayerController>(GetOwningPlayerController());
 			if (IsValid(AuraPlayerController))
 			{
 				UIOverlay = Cast<UUI_Overlay>(WidgetBlueprint::CreateWidget(UIOverlayClass, AuraPlayerController));

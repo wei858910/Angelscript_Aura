@@ -19,7 +19,7 @@ class UAuraAnim : UAnimInstance
 	{
 		if (Owner != nullptr)
 		{
-			MoveSpeed = Owner.Get().MovementComponent.Velocity.Size2D();
+			MoveSpeed = Owner.Get().GetMovementComponent().Velocity.Size2D();
 
 			bShouldMove = MoveSpeed > 3. ? true : false;
 		}

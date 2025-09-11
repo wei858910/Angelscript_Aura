@@ -16,7 +16,7 @@ class UEnemyAim : UAnimInstance
 	{
 		if (Owner != nullptr)
 		{
-			MoveSpeed = Owner.Get().MovementComponent.Velocity.Size2D();
+			MoveSpeed = Owner.Get().GetMovementComponent().Velocity.Size2D();
 		}
 	}
 };
