@@ -1,7 +1,7 @@
 # 使用 AngelScript 学习 虚幻引擎 GAS 
 
 ## 环境配置
-- **引擎版本**: UE5.6.0 (Hazelight 的 AngelScript 分支)
+- **引擎版本**: UE5.6.1 (Hazelight 的 AngelScript 分支)
   - GitHub: https://github.com/Hazelight/UnrealEngine-Angelscript
     
 - **参考范例**: AngelscriptAura 项目
